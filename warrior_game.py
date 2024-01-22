@@ -92,12 +92,8 @@ class Store():
     ]
 
     def go_shopping(self, hero): 
-        
-
-
-
-
-        ascii_art = """
+        while True:
+            ascii_art = """
 
 
  ____      ____                        _                           ___             _   __         _    _   
@@ -109,22 +105,26 @@ class Store():
                                                                                                            
 
  """
-        print(ascii_art)
-        print(f"Welcome to Warrior Outlets! Bank Balance: {hero.coins}")
-        print("Check out our avaliable items:!")
-        #for loop for items taken from inventory
-        for items in self.Items: 
-            print(f"{items['name']} - {items['cost']} coins.")
+            print(ascii_art)
+            print(f"Welcome to Warrior Outlets! Bank Balance: {hero.coins}")
+            print("Check out our avaliable items:!")
+            #for loop for items taken from inventory
+            for items in self.Items: 
+                print(f"{items['name']} - {items['cost']} coins.")
 
-        selection = input("Enter the name of your selected item, or type 'exit' to leave:  ")
+            selection = input("Enter the name of your selected item, or type 'exit' to leave:  ")
         
-        if selection.lower() == 'exit': 
-            print("Thanks!! Come back soon!")
-        else: 
-            item = next((i for i in self.Items if i['name'].lower() == selection.lower()), None)
+            if selection.lower() == 'exit': 
+                print("Thanks!! Come back soon!") 
+                break
+            
+            else: 
+                item = next((i for i in self.Items if i['name'].lower() == selection.lower()), None)
             if item: 
                 hero.buy(globals()[item["class"]](name = item["name"], cost = item["cost"]))
                 self.go_shopping(hero)
+                break
+                
             else: 
                 print("Oops! Pick something valid from the selection!")
 
@@ -180,7 +180,7 @@ ascii_art = """
 
 while hero.alive():
     print(ascii_art)
-    print("You encounter enemies! It's time to rumble, so choose a character:")
+    print("You've been spotted by your enemies! Choose an option below:")
     print("1. Shadow")
     print("2. Zombie")
     print("3. Wizard")
@@ -199,10 +199,19 @@ while hero.alive():
     elif user_input == "4":
         enemy = archer
     elif user_input == "5":
-        store.do_shopping(hero)
+        store.go_shopping(hero)
         continue
     elif user_input == "6":
-        print("See ya L8r!")
+        ascii_art = """
+  ______                    ____  ____          _____       ____            _  
+.' ____ \                  |_  _||_  _|        |_   _|    .' __ '.         | | 
+| (___ \_| .---.  .---.      \ \  / / ,--.       | |      | (__) |  _ .--. | | 
+ _.____`. / /__\\/ /__\\      \ \/ / `'_\ :      | |   _  .`____'. [ `/'`\]| | 
+| \____) || \__.,| \__.,      _|  |_ // | |,    _| |__/ || (____) | | |    |_| 
+ \______.' '.__.' '.__.'     |______|\'-;__/   |________|`.______.'[___]   (_) 
+                                                                                                                                                                                                                        
+ """
+        print(ascii_art)
         break
     else:
         print("Invalid choice. Please enter a valid option.")
