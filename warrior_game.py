@@ -18,7 +18,7 @@ class Character:
         if random.random() < 0.2:
             damage *= 2
             print("Double Damage!") 
-        enemy.health -= damage
+        enemy.health = max(0, enemy.health - damage)
     
     def print_status(self, enemy):
         print(f"{self.name}: {self.health} | {enemy.name}: {enemy.health} | Coins: {self.coins}")
@@ -60,7 +60,7 @@ class Shadow(Enemy):
 class Zombie(Enemy): 
     def __init__(self): 
         super().__init__(health =5, power =2, name="Zombie", bounty=8  )
-
+    # This method makes sure that the zombie stays alive 
     def alive(): 
         return True 
     
@@ -108,9 +108,28 @@ class Store():
         if selction.lower() == 'exit': 
             print("Thanks!! Come back soon!")
         else: 
-            pass
+            item = next(( i for i in self.Items if i ['name'].lower == selction.lower()), None)
+            if item: 
+                # globals() function is a built-in function that returns a dictionary representing the current global symbol table.  https://www.geeksforgeeks.org/python-globals-function/
+                hero.buy(globals()[item["class"]]())
+                self.go_shopping(hero)
+            else: 
+                print("Oops! Pick something valid from the selection!")
 
 
+#defining the name and cost of the item in its on class 
+class Item: 
+    def __init__(self, name, cost):
+        self.name = name 
+        self.cost = cost 
+    
+    def apply_item(self, character):
+        pass
+
+#defining the item Tonic with the default value of tonie and cost of 5 coins.
+class Tonic(Item): 
+    def __init__(self, name, cost):
+        super().__init__(name="Tonic", cost=5)
 
 
 
