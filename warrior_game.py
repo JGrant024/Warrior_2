@@ -39,13 +39,13 @@ class Hero(Character):
         #The super() function is used to give access to methods and properties of a parent or sibling class.
         return super().buy(item)
 
-class Enemy(): 
+class Enemy(Character): 
     def __init__(self, health, power, name, bounty):
         super().__init__(self, health, power, name)
         self.bounty = bounty 
 
 #created a class for the charater with default value for health, power, and bounty. 
-class Shadow(): 
+class Shadow(Enemy): 
     def __init__(self): 
         super().__init__(health =1, power = 1, name ="Shadow", bounty = 6)
 
@@ -57,15 +57,59 @@ class Shadow():
             super().attack(hero)
 
 #Make a Zombie character that doesn't die even if their health is below zero.
-class Zombie(): 
+class Zombie(Enemy): 
     def __init__(self): 
         super().__init__(health =5, power =2, name="Zombie", bounty=8  )
 
     def alive(): 
         return True 
     
+class Wizard(Enemy): 
+    def __init__(self): 
+       super().__init__(health = 8, power= 4, name= "Wizard", bounty= 10) 
 
+
+class Archer(Enemy): 
+    def __init__(self): 
+       super().__init__(health = 6, power= 3, name= "Archer", bounty= 7) 
+
+
+# Make a Store class to make a virtual "shop" within the game where characters can purchase items.
+# Add an list called Items, this will be a class variable. Have it store two items: Tonic and Sword         
+class Store(): 
+    Items =[
+        {"name": "Tonic", "cost": 5, "class": "Tonic"},
+        {"name": "Sword", "cost": 7, "class": "Sword"}
+    ]
+
+    def go_shopping(self, hero): 
+        ascii_art = """
+
+
+ ____      ____                        _                           ___             _   __         _    _   
+|_  _|    |_  _|                      (_)                        .'   `.          / |_[  |       / |_ | |  
+  \ \  /\  / / .--.   _ .--.  _ .--.  __   .--.   _ .--.        /  .-.  \ __   _ `| |-'| | .---.`| |-'| |  
+   \ \/  \/ // .'`\ \[ `/'`\][ `/'`\][  |/ .'`\ \[ `/'`\]       | |   | |[  | | | | |  | |/ /__\\| |  | |  
+    \  /\  / | \__. | | |     | |     | || \__. | | |           \  `-'  / | \_/ |,| |, | || \__.,| |, |_|  
+     \/  \/   '.__.' [___]   [___]   [___]'.__.' [___]           `.___.'  '.__.'_/\__/[___]'.__.'\__/ (_)  
+                                                                                                           
+
+ """
+        print(ascii_art)
+                     
+        print(f"Welcome to Warrior Outlets! Bank Balance: {hero.coins}")
+        print("Check out our avaliable items:!")
+        #for loop for items taken from inventory
+        for items in self.Items: 
+            print(f"{items['name']} - {items['cost']} coins.")
+
+        selction = input("Enter the name of your selected item, or type 'exit' to leave:  ")
         
+        if selction.lower() == 'exit': 
+            print("Thanks!! Come back soon!")
+        else: 
+            pass
+
 
 
 
