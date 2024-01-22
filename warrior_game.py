@@ -9,16 +9,16 @@ class Character:
 
 
     def alive(self): 
-        return self.health > 1
+        return self.health > 0
     
-    def attack(self, enemy):   
+    def attack(self, enemy):
         damage = random.randint(1, self.power)
-        enemy.health -= damage 
-        # created to double damage points 
+        # Double damage with a 20% probability
         if random.random() < 0.2:
             damage *= 2
-            print("Double Damage!") 
-        enemy.health = max(0, enemy.health - damage)
+            print("Double damage!")
+
+        enemy.health = max(0, enemy.health - damage)  # Ensure enemy's health doesn't go below 0
     
     def print_status(self, enemy):
         print(f"{self.name}: {self.health} | {enemy.name}: {enemy.health} | Coins: {self.coins}")
@@ -41,13 +41,20 @@ class Hero(Character):
 
 class Enemy(Character): 
     def __init__(self, health, power, name, bounty):
-        super().__init__(self, health, power, name)
+        super().__init__(health, power, name)
         self.bounty = bounty 
+
+    def take_damage(self, damage):
+        self.health = max(0, self.health - damage)
 
 #created a class for the charater with default value for health, power, and bounty. 
 class Shadow(Enemy):  
         def __init__(self): 
             super().__init__(health=1, power=1, name="Shadow", bounty=6)
+
+        def alive(self):
+        # Call the alive method of the Enemy class
+            return super().alive()
 
     # This allows the hero to take damage once out of every ten times hit. 
         def attack(self, hero): 
@@ -171,12 +178,9 @@ ascii_art = """
 
 """
 
-
-
-
 while hero.alive():
     print(ascii_art)
-    print("Choose one of the following options or get ready for a rumble!")
+    print("You encounter enemies! It's time to rumble, so choose a character:")
     print("1. Shadow")
     print("2. Zombie")
     print("3. Wizard")
@@ -195,50 +199,20 @@ while hero.alive():
     elif user_input == "4":
         enemy = archer
     elif user_input == "5":
-        store.go_shopping(hero)
+        store.do_shopping(hero)
         continue
     elif user_input == "6":
         print("See ya L8r!")
         break
     else:
-        print("Opps! Choose valid option!")
-        continue
-
-while hero.alive():
-    print(ascii_art)
-    print("Choose one of the following options or get ready for a rumble!")
-    print("1. Shadow")
-    print("2. Zombie")
-    print("3. Wizard")
-    print("4. Archer")
-    print("5. Go Shopping")
-    print("6. Quit")
-
-    user_input = input()
-
-    if user_input == "1":
-        enemy = shadow
-    elif user_input == "2":
-        enemy = zombie
-    elif user_input == "3":
-        enemy = wizard
-    elif user_input == "4":
-        enemy = archer
-    elif user_input == "5":
-        Store.go_shopping(hero)
-        continue
-    elif user_input == "6":
-        print("See ya L8r!")
-        break
-    else:
-        print("Opps! Choose valid option!")
+        print("Invalid choice. Please enter a valid option.")
         continue
 
     while enemy.alive() and hero.alive():
         print("What do you want to do?")
-        print("1. Rumble")
+        print("1. Fight")
         print("2. Do nothing")
-        print("3. Get out there!")
+        print("3. Flee")
         user_input = input()
 
         if user_input == "1":
@@ -249,6 +223,17 @@ while hero.alive():
             if not enemy.alive():
                 print(f"You taught {enemy.name} a lesson, and earned {enemy.bounty} coins!")
                 hero.coins += enemy.bounty
+                ascii_art = """
+   ______                                   ___                           _  
+ .' ___  |                                .'   `.                        | | 
+/ .'   \_|  ,--.   _ .--..--.  .---.     /  .-.  \ _   __  .---.  _ .--. | | 
+| |   ____ `'_\ : [ `.-. .-. |/ /__\\    | |   | |[ \ [  ]/ /__\\[ `/'`\]| | 
+\ `.___]  |// | |, | | | | | || \__.,    \  `-'  / \ \/ / | \__., | |    |_| 
+ `._____.' \'-;__/[___||__||__]'.__.'     `.___.'   \__/   '.__.'[___]   (_) 
+                                                                             
+                                                                                                           
+"""
+                print(ascii_art)
                 break
 
         elif user_input == "2":
@@ -256,12 +241,37 @@ while hero.alive():
             hero.print_status(enemy)
 
         elif user_input == "3":
-            print("The Battle was too much! You left!")
+            print("The battle was too much! You left!")
+            ascii_art = """
+   ______                                   ___                           _  
+ .' ___  |                                .'   `.                        | | 
+/ .'   \_|  ,--.   _ .--..--.  .---.     /  .-.  \ _   __  .---.  _ .--. | | 
+| |   ____ `'_\ : [ `.-. .-. |/ /__\\    | |   | |[ \ [  ]/ /__\\[ `/'`\]| | 
+\ `.___]  |// | |, | | | | | || \__.,    \  `-'  / \ \/ / | \__., | |    |_| 
+ `._____.' \'-;__/[___||__||__]'.__.'     `.___.'   \__/   '.__.'[___]   (_) 
+                                                                             
+                                                                                                           
+"""
+            print(ascii_art)
             break
 
         else:
-            print("Opps! Choose a valid option!")
+            print("Oops! Choose a valid option!")
 
         if not hero.alive():
+            ascii_art = """
+   ______                                   ___                           _  
+ .' ___  |                                .'   `.                        | | 
+/ .'   \_|  ,--.   _ .--..--.  .---.     /  .-.  \ _   __  .---.  _ .--. | | 
+| |   ____ `'_\ : [ `.-. .-. |/ /__\\    | |   | |[ \ [  ]/ /__\\[ `/'`\]| | 
+\ `.___]  |// | |, | | | | | || \__.,    \  `-'  / \ \/ / | \__., | |    |_| 
+ `._____.' \'-;__/[___||__||__]'.__.'     `.___.'   \__/   '.__.'[___]   (_) 
+                                                                             
+                                                                                                           
+"""
+            print(ascii_art)
             print("You have been unalived. Try again? ")
             break
+
+    else:
+        print("Oops! Choose a valid option!")
